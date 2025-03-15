@@ -60,3 +60,40 @@ export const updateStatus = async (req, res) => {
         res.status(500).json({ message: error });
     }
 }
+
+//getStudents function is used to get all the students from the database
+export const getStudents = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('students')
+            .select('*');
+        
+        if (error) {
+            throw new Error(error);
+        }
+
+        res.status(200).json({ message: 'success', data: data });
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+}
+
+//updateStudentStatus function is used to update the acquiring status of a student
+export const updateStudentStatus = async (req, res) => {
+    const { regno, status } = req.body;
+
+    try {
+        const { error } = await supabase
+            .from('students')
+            .update({ status: status })
+            .eq('regno', regno);
+        
+        if (error) {
+            throw new Error(error);
+        }
+
+        res.status(200).json({ status: true });
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+}

@@ -1,7 +1,7 @@
 import { supabase } from "../database/db.js"
 
 //upload students dTA TO DB
-export const uploadData = async (req, res) => {
+export const register = async (req, res) => {
     const {name, regno, course} = req.body
 
     try {
