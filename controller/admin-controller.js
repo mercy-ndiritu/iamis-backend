@@ -97,3 +97,40 @@ export const updateStudentStatus = async (req, res) => {
         res.status(500).json({ message: error });
     }
 }
+
+//getLectures function is used to get all the lectures from the database
+export const getLectures = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('lecturers')
+            .select('*');
+        
+        if (error) {
+            throw new Error(error);
+        }
+
+        res.status(200).json({ message: 'success', data: data });
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+}
+
+//updateLecturerStatus function is used to update the acquiring status of a lecturer
+export const updateLecturerStatus = async (req, res) => {
+    const { job_number, status } = req.body;
+
+    try {
+        const { error } = await supabase
+            .from('lectures')
+            .update({ status: status })
+            .eq('job_number', job_number);
+        
+        if (error) {
+            throw new Error(error);
+        }
+
+        res.status(200).json({ status: true });
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+}
