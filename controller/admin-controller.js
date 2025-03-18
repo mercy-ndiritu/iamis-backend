@@ -1,7 +1,7 @@
 import { supabase } from "../database/db.js";
 //addCompany function is used to add a company to the database
 export const addCompany = async (req, res) => {
-    const { company_name, industry, students_needed } = req.body;
+    const { company_name, industry, students_needed, position, deadline } = req.body;
 
     let students_accepted = 0
     let status = false
@@ -10,7 +10,7 @@ export const addCompany = async (req, res) => {
         // Insert data into the companies table
         const { error } = await supabase
             .from('Companies')
-            .insert([{ company_name, industry, students_needed, students_accepted, status }])
+            .insert([{ company_name, industry, position, deadline, students_needed, students_accepted, status }])
             .single();
         
         if (error) {
@@ -29,7 +29,7 @@ export const getCompanies = async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('Companies')
-            .select('company_name, industry, students_needed, students_accepted, status');
+            .select('company_name, industry, position, deadline, students_needed, students_accepted, status');
         
         if (error) {
             throw new Error(error);
@@ -121,11 +121,12 @@ export const updateLecturerStatus = async (req, res) => {
 
     try {
         const { error } = await supabase
-            .from('lectures')
+            .from('lecturers')
             .update({ status: status })
             .eq('job_number', job_number);
         
         if (error) {
+            console.log(error);
             throw new Error(error);
         }
 

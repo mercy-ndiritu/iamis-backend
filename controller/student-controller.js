@@ -21,3 +21,24 @@ export const register = async (req, res) => {
         throw new Error('An error occured while uploading data')
     }
 }
+//APPLY FOR JOB
+export const apply = async (req, res) => {
+    const { name, regno, company, position, status} = req.body
+
+    try {
+        const {error} = await supabase
+            .from('applications')
+            .insert([{name, regno, company, position, status}])
+            .select()
+
+        if (error) {
+            return res.status(400).json({message: 'An error occured while uploading data', error: error.message})
+        }  
+
+        res.status(201).json({message: 'success'})
+            
+    } catch (error) {
+        console.log(error.message)
+        throw new Error({message: 'An error occured while uploading data', error: error.message})
+    }
+}
