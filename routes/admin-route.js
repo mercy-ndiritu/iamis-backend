@@ -1,5 +1,15 @@
 import express from 'express'
-import { addCompany, getCompanies, updateStatus, getStudents, updateStudentStatus, getLectures, updateLecturerStatus } from '../controller/admin-controller.js'
+import { 
+    addCompany, 
+    getCompanies, 
+    updateStatus, 
+    getStudents, 
+    updateStudentStatus, 
+    getLectures, 
+    updateLecturerStatus, 
+    getApplications,
+    updateApplicationStatus
+} from '../controller/admin-controller.js'
 
 const adminRouter = express.Router()
 
@@ -10,5 +20,8 @@ adminRouter.route('/get-students').get(getStudents)
 adminRouter.route('/updateStudentStatus').post(updateStudentStatus)
 adminRouter.route('/get-lectures').get(getLectures)
 adminRouter.route('/updateLecturerStatus').post(updateLecturerStatus)
+adminRouter.route('/get-applications').get(getApplications)
+adminRouter.route('/updateApplicationStatus').post(updateApplicationStatus)
+
 
 export default adminRouter

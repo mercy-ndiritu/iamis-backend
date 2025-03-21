@@ -135,3 +135,43 @@ export const updateLecturerStatus = async (req, res) => {
         res.status(500).json({ message: error });
     }
 }
+//GET ALL APPLICATIONS
+export const getApplications = async (req, res) => {
+    try {
+        const {data, error} = await supabase
+            .from('applications')
+            .select("*")
+
+        if (error) {
+            return res.status(400).json({message: 'An error occured while fetching data', error: error.message})
+        }  
+
+        res.status(200).json({status:true, data})
+            
+    } catch (error) {
+        console.log(error.message)
+        throw new Error({message: 'An error occured while fetching data', error: error.message})
+    }
+}
+
+//UPDATE APPLICATION STATUS
+export const updateApplicationStatus = async (req, res) => {
+    const {company, regno} = req.body
+
+    try {
+        const {error} = await supabase
+            .from('applications')
+            .update({status: 'approved'})
+            .eq('company', company)
+            .eq('regno', regno)
+
+        if (error) {
+            return res.status(400).json({message: 'An error occured while updating data', error: error.message})
+        }
+
+        res.status(200).json({status: true})
+    } catch (error) {
+        console.log(error.message)
+        throw new Error({message: 'An error occured while updating data', error: error.message})
+    }
+}
