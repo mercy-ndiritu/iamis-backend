@@ -62,3 +62,46 @@ export const getApplications = async (req, res) => {
         res.status(500).json({status: false,message: error})
     }
 }
+
+//logbook entry
+export const logBook = async (req, res) => {
+    const {regno, week_number, report, comments} = req.body
+
+    const status = 'pending'
+
+    try {
+        const {error} = await supabase
+            .from('logbook')
+            .insert([{regno, week_number, report, comments, status}])
+            .select()
+
+        if (error) {
+            return res.status(400).json({message: 'An error occured while uploading data', error: error.message})
+        }  
+
+        res.status(201).json({status: true})
+            
+    } catch (error) {
+        console.log(error.message)
+        throw new Error({message: 'An error occured while uploading data', error: error.message})
+    }
+}
+
+//GET STUDENT LOGBOOK
+export const getLogBook = async (req, res) => {
+    const regno = req.query.regno
+    try {
+        const {data, error} = await supabase
+            .from('logbook')
+            .select("*")
+            .eq('regno', regno)
+
+        if (error) {
+            return res.status(400).json({message: 'An error occured while fetching data', error: error.message})
+        }
+
+        res.status(200).json({status: true, data})
+    } catch (error) {
+        res.status(500).json({status: false,message: error})
+    }
+}
