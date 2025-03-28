@@ -1,4 +1,9 @@
 import { supabase } from "../database/db.js";
+import { 
+    assignStudentsLogic, 
+    updateAssignmentsLogic 
+} from "../utils/logics.js";
+
 //addCompany function is used to add a company to the database
 export const addCompany = async (req, res) => {
     const { company_name, industry, students_needed, position, deadline } = req.body;
@@ -173,5 +178,41 @@ export const updateApplicationStatus = async (req, res) => {
     } catch (error) {
         console.log(error.message)
         throw new Error({message: 'An error occured while updating data', error: error.message})
+    }
+}
+
+//ASSIGN STUDENTS TO TUTORS
+export const assignStudents = async (req, res) => {
+    try {
+        const [studentsData, teachersData] = await Promise.all([
+            supabase
+                .from('students')
+                .select('*')
+                .eq('status', true)
+                .eq('assigned_to', 'none'),
+            supabase
+                .from('lecturers')
+                .select('*')
+                .eq('status', true)
+        ]);
+
+        if (studentsData.error || teachersData.error) {
+            return res.status(400).json({ message: 'An error occurred while fetching data', error: studentsData.error || teachersData.error });
+        }
+
+        //assign students to tutors
+        const assignments = await assignStudentsLogic(studentsData.data, teachersData.data);
+
+        //update students in the database
+        const response = await updateAssignmentsLogic(assignments);
+
+        if (!response.success) {
+            return res.status(400).json({ message: 'An error occurred while updating data', error: response.message });
+        }
+
+        res.status(200).json( response );
+
+    } catch (error) {
+        res.status(500).json({ message: error });
     }
 }

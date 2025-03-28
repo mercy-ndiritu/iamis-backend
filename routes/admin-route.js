@@ -8,7 +8,8 @@ import {
     getLectures, 
     updateLecturerStatus, 
     getApplications,
-    updateApplicationStatus
+    updateApplicationStatus,
+    assignStudents
 } from '../controller/admin-controller.js'
 
 const adminRouter = express.Router()
@@ -22,6 +23,6 @@ adminRouter.route('/get-lectures').get(getLectures)
 adminRouter.route('/updateLecturerStatus').post(updateLecturerStatus)
 adminRouter.route('/get-applications').get(getApplications)
 adminRouter.route('/updateApplicationStatus').post(updateApplicationStatus)
-
+adminRouter.route('/assign-students').post(assignStudents)
 
 export default adminRouter
