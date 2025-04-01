@@ -105,3 +105,48 @@ export const getLogBook = async (req, res) => {
         res.status(500).json({status: false,message: error})
     }
 }
+
+//GET STUDENT ASSIGNED TO
+export const assignedTo = async (req, res) => {
+    const regno = req.query.regno
+
+    try {
+        const {data, error} = await supabase
+            .from('students')
+            .select("assigned_to")
+            .eq('regno', regno);
+
+        if (error) {
+            return res.status(400).json({message: 'An error occured while fetching data', error: error.message})
+        }
+
+        res.status(200).json({status: true, tutor: data[0].assigned_to})
+    } catch (error) {
+        res.status(500).json({status: false,message: error})
+    }
+}
+
+//Post placement data
+export const placement = async (req, res) => {
+    const { regno, company, position, town, location, building, floor, phone } = req.body
+
+    try {
+        const {data,error} = await supabase
+            .from('placement')
+            .upsert(
+                { regno, company, position, town, location, building, floor, phone },
+                { onConflict: ['regno'] }
+            )
+            .select()
+
+        if (error) {
+            return res.status(400).json({message: 'An error occured while uploading data', error: error.message})
+        }  
+
+        res.status(201).json({status: true})
+            
+    } catch (error) {
+        console.log(error.message)
+        throw new Error({message: 'An error occured while uploading data', error: error.message})
+    }
+}

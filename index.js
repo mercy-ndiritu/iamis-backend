@@ -5,6 +5,7 @@ import { config } from 'dotenv'
 import homeRouter from './routes/home-route.js'
 import studentRouter from './routes/student-route.js'
 import adminRouter from './routes/admin-route.js'
+import lecturerRouter from './routes/lecturer-route.js'
 
 config()
 
@@ -19,6 +20,7 @@ app.use(express.json())
 
 app.use("/api/admin", adminRouter)
 app.use("/api/student", studentRouter)
+app.use("/api/lecturer", lecturerRouter)
 app.use("/api", homeRouter)
 
 app.listen(PORT, ()  => {
