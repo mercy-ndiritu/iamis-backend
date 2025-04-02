@@ -128,13 +128,13 @@ export const assignedTo = async (req, res) => {
 
 //Post placement data
 export const placement = async (req, res) => {
-    const { regno, company, position, town, location, building, floor, phone } = req.body
+    const { regno, company, position, town, location, building, floor, phone, commencement } = req.body
 
     try {
         const {data,error} = await supabase
             .from('placement')
             .upsert(
-                { regno, company, position, town, location, building, floor, phone },
+                { regno, company, position, town, location, building, floor, phone, commencement },
                 { onConflict: ['regno'] }
             )
             .select()
@@ -148,5 +148,26 @@ export const placement = async (req, res) => {
     } catch (error) {
         console.log(error.message)
         throw new Error({message: 'An error occured while uploading data', error: error.message})
+    }
+}
+
+//update logbook status
+export const logbookApproval = async (req, res) => {
+    const { regno, week_number } = req.body;
+
+    try {
+        const { error } = await supabase
+            .from('logbook')
+            .update({ status: 'approved' })
+            .eq('regno', regno)
+            .eq('week_number', week_number);
+        
+        if (error) {
+            throw new Error(error);
+        }
+
+        res.status(200).json({ status: true });
+    } catch (error) {
+        res.status(500).json({ message: error });
     }
 }

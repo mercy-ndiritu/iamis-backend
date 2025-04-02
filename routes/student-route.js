@@ -6,7 +6,8 @@ import {
     logBook,
     getLogBook,
     assignedTo,
-    placement
+    placement,
+    logbookApproval
 } from '../controller/student-controller.js'
 
 const studentRouter = express.Router()
@@ -19,5 +20,6 @@ studentRouter.route('/logbook-entry').post(logBook)
 studentRouter.route('/get-logbooks').get(getLogBook)
 studentRouter.route('/assigned-to').get(assignedTo)
 studentRouter.route('/fill-placement').post(placement)
+studentRouter.route('/logbook-approval').post(logbookApproval)
 
 export default studentRouter
