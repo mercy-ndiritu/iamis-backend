@@ -216,3 +216,20 @@ export const assignStudents = async (req, res) => {
         res.status(500).json({ message: error });
     }
 }
+
+//GET REPORTS
+export const getReports = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('reports')
+            .select('*');
+        
+        if (error) {
+            throw new Error(error);
+        }
+
+        res.status(200).json({ status: true, data: data });
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+}

@@ -171,3 +171,32 @@ export const logbookApproval = async (req, res) => {
         res.status(500).json({ message: error });
     }
 }
+
+//upload file to supabase storage
+export const uploadFile = async (req, res) => {
+    const { regno, name, filename} = req.body; 
+    console.log(req.body)
+    try {
+         //get the file public url
+        const { data: { publicUrl } } = await supabase
+        .storage
+        .from('iamisfiles')
+        .getPublicUrl(filename);
+
+        //store the file in the database
+        const { data: fileUploadData, error } = await supabase
+            .from('reports')
+            .insert([{ regno, name, publicUrl }])
+            .select();
+
+        if (error) {
+            return res.status(400).json({ message: 'An error occurred while uploading the file', error: error.message });
+        }
+
+        res.status(200).json({ status: true, fileUploadData });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred while uploading the file', error: error.message });
+    }
+}
+

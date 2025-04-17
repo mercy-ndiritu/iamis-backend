@@ -7,9 +7,9 @@
     "start": "nodemon index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Mercy Ndiritu",
   "license": "ISC",
-  "description": "",
+  "description": "IAMIS Backend Server",
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
     "cors": "^2.8.5",
