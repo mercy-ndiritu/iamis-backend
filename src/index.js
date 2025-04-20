@@ -2,10 +2,10 @@ import express from 'express'
 import cors from 'cors'
 import { config } from 'dotenv'
 
-import homeRouter from './routes/home-route.js'
-import studentRouter from './routes/student-route.js'
-import adminRouter from './routes/admin-route.js'
-import lecturerRouter from './routes/lecturer-route.js'
+import homeRouter from '../routes/home-route.js'
+import studentRouter from '../routes/student-route.js'
+import adminRouter from '../routes/admin-route.js'
+import lecturerRouter from '../routes/lecturer-route.js'
 
 config()
 
